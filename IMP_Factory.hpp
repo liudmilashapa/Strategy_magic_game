@@ -1,72 +1,84 @@
-#ifndef _IMP_MAGIC_UNIT_HPP_
-#define _IMP_MAGIC_UNIT_HPP_
+#ifndef _IMP_FACTORY_HPP_
+#define _IMP_FACTORY_HPP_
 
-#include < list >
 #include < memory >
 
-#include "API_Magic_Unit.hpp"
-#include "IMP_Unit.hpp"
-#include "spell.hpp"
-
+#include "IMP_Fight.hpp"
+#include "IMP_Magic_Unit.hpp"
+#include "Spell.hpp"
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 namespace GameModel {
 namespace Implementation {
-	
-//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-
-	typedef
-	std::list<  Spell * >
-	spellContainer;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	class MagicUnit : public GameModel::MagicUnit, GameModel::Implementation::Unit
+	class AbilityUnit;
+	class Fight;
+	class MagicUnit;
+	class Spell;
+	class Unit;
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	class GameFactory
 	{
-		
+
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-	
+
 	public:
 
-		MagicUnit(
-			  const double & _maxHP
-			, const double & _attackRate
-			, const double & _defenseRate
-			, const double & _maxMPU
-			, const spellContainer & _spells)
-			:	 GameModel::Implementation::Unit (
-					  _maxHP
-					, _attackRate
-					, _defenseRate)
-				, m_maxMPU ( _maxMPU )
-				, m_spells ( _spells )
-		{}
+		GameFactory() {}
 
-		MagicUnit(const MagicUnit & _other) = delete;
-		MagicUnit & operator = (const MagicUnit & _other) = delete;
+		GameFactory(const GameFactory & _other) = delete;
+		GameFactory & operator = (const GameFactory & _other) = delete;
 
-		virtual double getCurentMPU () const override;
-		void setCurentMPU ( double _curentMPU );
-		
-		virtual double getMaxMPU () const override;
+		std::unique_ptr < GameModel::Unit > createUnit (
+			  const double  _maxHP
+			, const double  _attackRate
+			, const double  _defenseRate
+		) const;
+
+		std::unique_ptr < GameModel::MagicUnit > createMagicUnit (
+			  const double  _maxHP
+			, const double  _attackRate
+			, const double  _defenseRate
+			, const double  _maxMPU
+			, const spellContainer & _spells
+		) const;
+
+		std::unique_ptr < GameModel::AbilityUnit > createAbilityUnit (
+			  const double  _maxHP
+			, const double  _attackRate
+			, const double  _defenseRate
+		) const;
+
+		std::unique_ptr < GameModel::Fight > createFight (
+			  const fightContainer & _army1
+			, const fightContainer & _army2
+		) const;
+
+		std::unique_ptr < GameModel::Spell > createSpell (
+			const double  _cost
+		) const;
+	
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-	
+
 	private:
 	
-		double m_curentMPU;
-		double m_maxMPU;
-		spellContainer m_spells;
-
 	};
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-	
+
 } // namespace Implementation
 } // namespace GameModel
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 
-#endif // !_IMP_MAGIC_UNIT_HPP_
+#endif // !_IMP_FACTORY_HPP_
+
+
+

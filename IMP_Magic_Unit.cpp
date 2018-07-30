@@ -1,21 +1,31 @@
-#include "API_Unit.hpp"
-#include "IMP_Unit.hpp"
-#include "API_Magic_Unit.hpp"
 #include "IMP_Magic_Unit.hpp"
 
 
-namespace Game_Model
-{
-	namespace Implementation
-	{
-		double Magic_Unit::getCurentMPU () const 
-		{
-			return m_curentMPU;
-		}
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-		double Magic_Unit::getMaxMPU () const 
-		{
-			return m_maxMPU;
-		}
+namespace GameModel {
+namespace Implementation {
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	double MagicUnit::getCurentMPU () const
+	{
+		return m_curentMPU;
 	}
-}
+
+	void MagicUnit::setCurentMPU ( double _curentMPU )
+	{
+		m_curentMPU = _curentMPU;
+	}
+
+	double MagicUnit::getMaxMPU () const 
+	{
+		return m_maxMPU;
+	}
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+} // namespace Implementation
+} // namespace GameModel
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

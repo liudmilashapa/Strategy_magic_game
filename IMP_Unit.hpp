@@ -5,29 +5,44 @@
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-namespace Game_Model {
+namespace GameModel {
 namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	class Unit : public Game_Model::Unit
+	class Unit : public GameModel::Unit
 	{
 		
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	public:
-	
+
 		Unit()
+		{};
+
+		Unit ( const double & _maxHP
+			 , const double & _attackRate
+			 , const double & _defenseRate )
+
+			:	  m_maxHP ( _maxHP )
+				, m_attackRate ( _attackRate )
+				, m_defenseRate ( _defenseRate )
 		{}
+		
+		Unit(const Unit & _other) = delete;
+		Unit & operator = (const Unit & _other) = delete;
+
 
 		Unit(double _curentHP, double _maxHP, double _attackRate, double _defenseRate)
 		: m_curentHP ( _curentHP ), m_maxHP ( _maxHP ), m_attackRate ( _attackRate ), m_defenseRate ( _defenseRate )
 		{}
 		
-		virtual double getCurentHP() const;
-		virtual double getMaxHP() const;
-		virtual double getAttackRate() const;
-		virtual double getDefenseRate() const;
+		virtual double getCurentHP() const override;
+		virtual void setCurentHP(double _other) override;
+
+		virtual double getMaxHP() const override;
+		virtual double getAttackRate() const override;
+		virtual double getDefenseRate() const override;
 
 
 
@@ -48,5 +63,6 @@ namespace Implementation {
 } // namespace GameModel
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+ 
 
 #endif // !_IMP_UNIT_HPP_
