@@ -10,6 +10,13 @@
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 namespace GameModel {
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	class Unit;
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
 namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
@@ -18,7 +25,6 @@ namespace Implementation {
 	class Fight;
 	class MagicUnit;
 	class Spell;
-	class Unit;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -35,32 +41,32 @@ namespace Implementation {
 		GameFactory & operator = (const GameFactory & _other) = delete;
 
 		std::unique_ptr < GameModel::Unit > createUnit (
-			  const double  _maxHP
-			, const double  _attackRate
-			, const double  _defenseRate
+			  const double & _maxHP
+			, const double & _attackRate
+			, const double & _defenseRate
 		) const;
 
 		std::unique_ptr < GameModel::MagicUnit > createMagicUnit (
-			  const double  _maxHP
-			, const double  _attackRate
-			, const double  _defenseRate
-			, const double  _maxMPU
+			  const double & _maxHP
+			, const double & _attackRate
+			, const double & _defenseRate
+			, const double & _maxMPU
 			, const spellContainer & _spells
 		) const;
 
 		std::unique_ptr < GameModel::AbilityUnit > createAbilityUnit (
-			  const double  _maxHP
-			, const double  _attackRate
-			, const double  _defenseRate
+			  const double & _maxHP
+			, const double & _attackRate
+			, const double & _defenseRate
 		) const;
 
 		std::unique_ptr < GameModel::Fight > createFight (
-			  const fightContainer & _army1
-			, const fightContainer & _army2
+			  fightContainer & _army1
+			, fightContainer & _army2
 		) const;
 
 		std::unique_ptr < GameModel::Spell > createSpell (
-			const double  _cost
+			const double & _cost
 		) const;
 	
 

@@ -1,7 +1,7 @@
 #ifndef _IMP_FIGHT_HPP
 #define _IMP_FIGHT_HPP
 
-#include < list >
+#include < vector >
 #include < memory > 
 
 #include "API_Fight.hpp"
@@ -16,7 +16,7 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	typedef
-		std::list < GameModel::Unit * >
+		std::vector < GameModel::Unit * >
 		fightContainer;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
@@ -29,7 +29,7 @@ namespace Implementation {
 	public:
 
 		Fight( fightContainer & _army1, fightContainer & _army2 ) 
-		: m_army1( _army1 ), m_army2( _army2 )
+		:m_army1( _army1 ), m_army2( _army2 )
 		{}
 
 		Fight( const Fight & _other ) = delete;
@@ -45,9 +45,9 @@ namespace Implementation {
 		fightContainer m_army1;
 		fightContainer m_army2;
 
-		void isUnitInArmy(const fightContainer & _army, const Unit & _unit) const;
-		void isUnitLive(const Unit & _unit) const;
-		double calculateDamage(Unit & _unit1, Unit & _unit2) const;
+		void isUnitInArmy(const fightContainer & _army, const GameModel::Unit & _unit) const;
+		void isUnitLive(const GameModel::Unit & _unit) const;
+		double calculateDamage(GameModel::Unit & _unit1, GameModel::Unit & _unit2) const;
 	};
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

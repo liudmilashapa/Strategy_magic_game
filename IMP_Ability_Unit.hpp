@@ -11,15 +11,27 @@ namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	class AbilityUnit : public GameModel::AbilityUnit, GameModel::Implementation::Unit
+	typedef
+	GameModel::Implementation::Unit< GameModel::AbilityUnit >
+	AbilityUnitBase;
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	class AbilityUnit
+		:	public AbilityUnitBase
 	{
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	public:
 		
-		AbilityUnit() {}
-
+		AbilityUnit(
+				const double & _maxHP
+			,	const double & _attackRate
+			,	const double & _defenseRate
+		)
+			: AbilityUnitBase( _maxHP, _attackRate, _defenseRate )
+		{}
 
 		AbilityUnit( const AbilityUnit & _other) = delete;
 		AbilityUnit & operator = ( const AbilityUnit & _other) = delete;

@@ -7,34 +7,6 @@ namespace GameModel {
 namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-
-	double Unit::getCurentHP() const
-	{
-		return m_curentHP;
-	}
-
-	void Unit::setCurentHP(double _other)
-	{
-		m_curentHP = _other;
-	}
-
-	double Unit::getMaxHP() const
-	{
-		return m_maxHP;
-	}
-
-	double Unit::getAttackRate() const
-	{
-		return m_attackRate;
-	}
-
-	double Unit::getDefenseRate() const
-	{
-		return m_defenseRate;
-	}
-	
-
-//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 } // namespace Implementation
 } // namespace GameModel

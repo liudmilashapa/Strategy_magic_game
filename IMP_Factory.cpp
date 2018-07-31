@@ -19,23 +19,23 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	std::unique_ptr < GameModel::Unit > GameFactory::createUnit (
-		  const double  _maxHP
-		, const double  _attackRate
-		, const double  _defenseRate
+		  const double & _maxHP
+		, const double & _attackRate
+		, const double & _defenseRate
 	) const
 	{
-		return std::unique_ptr < GameModel::Unit > ( new GameModel::Implementation::Unit (
+		return std::unique_ptr < GameModel::Unit > ( new GameModel::Implementation::Unit< GameModel::Unit > (
 			  _maxHP
 			, _attackRate
 			, _defenseRate
 		));
 	}
 
-	/*std::unique_ptr < GameModel::MagicUnit > GameFactory::createMagicUnit (
-		  const double  _maxHP
-		, const double  _attackRate
-		, const double  _defenseRate
-		, const double  _maxMPU
+	std::unique_ptr < GameModel::MagicUnit > GameFactory::createMagicUnit (
+		  const double & _maxHP
+		, const double & _attackRate
+		, const double & _defenseRate
+		, const double & _maxMPU
 		, const spellContainer & _spells
 	) const
 	{
@@ -49,34 +49,37 @@ namespace Implementation {
 	}
 
 	std::unique_ptr < GameModel::AbilityUnit > GameFactory::createAbilityUnit(
-		  const double  _maxHP
-		, const double  _attackRate
-		, const double  _defenseRate
+		  const double & _maxHP
+		, const double & _attackRate
+		, const double & _defenseRate
 	) const
 	{
-		return  std::unique_ptr < GameModel::AbilityUnit > ( new GameModel::Implementation::AbilityUnit (
+		return  std::unique_ptr < GameModel::AbilityUnit > ( new AbilityUnit (
 			 _maxHP
 			, _attackRate
 			, _defenseRate
 		));
-	}*/
-
-	std::unique_ptr < GameModel::Fight > GameFactory::createFight (
-		  const fightContainer & _army1
-		, const fightContainer & _army2
-	) const
-	{
-		return  std::unique_ptr < GameModel::Fight > ( new GameModel::Implementation::Fight (
-			  _army1
-			, _army2
-		));
 	}
 
-	std::unique_ptr < GameModel::Spell > GameFactory::createSpell (
-		const double  _cost
+	std::unique_ptr < GameModel::Fight > GameFactory::createFight(
+		  fightContainer & _army1
+		, fightContainer & _army2
 	) const
 	{
-		return std::unique_ptr < GameModel::Spell >(new GameModel::Spell ( _cost ));
+		return  std::unique_ptr < GameModel::Fight >(new Fight(
+			  _army1
+			, _army2
+		)
+		);
+	}
+
+	std::unique_ptr < GameModel::Spell > GameFactory::createSpell(
+		const double & _cost
+	) const
+	{
+		return std::unique_ptr < GameModel::Spell >(new GameModel::Spell (
+			_cost
+		));
 	}
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

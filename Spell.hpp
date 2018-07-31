@@ -15,8 +15,7 @@ class Spell
 
 public:
 
-	Spell ( const double  _cost )
-	:m_cost(_cost)
+	Spell( double _cost) : m_cost( _cost ) 
 	{}
 
 	Spell(Spell const & _spell) = delete;

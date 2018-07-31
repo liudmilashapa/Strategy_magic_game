@@ -10,15 +10,13 @@ namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	class Unit : public GameModel::Unit
+	template< typename _BaseClass >
+	class Unit : public _BaseClass
 	{
 		
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	public:
-
-		Unit()
-		{};
 
 		Unit ( const double & _maxHP
 			 , const double & _attackRate
@@ -27,6 +25,7 @@ namespace Implementation {
 			:	  m_maxHP ( _maxHP )
 				, m_attackRate ( _attackRate )
 				, m_defenseRate ( _defenseRate )
+			,	m_curentHP( _maxHP )
 		{}
 		
 		Unit(const Unit & _other) = delete;
@@ -56,6 +55,39 @@ namespace Implementation {
 		double m_defenseRate;
 	
 	};
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	template< typename _BaseClass >
+	double Unit< _BaseClass >::getCurentHP() const
+	{
+		return m_curentHP;
+	}
+
+	template< typename _BaseClass >
+	void Unit< _BaseClass >::setCurentHP(double _other)
+	{
+		m_curentHP = _other;
+	}
+
+	template< typename _BaseClass >
+	double Unit< _BaseClass >::getMaxHP() const
+	{
+		return m_maxHP;
+	}
+
+	template< typename _BaseClass >
+	double Unit< _BaseClass >::getAttackRate() const
+	{
+		return m_attackRate;
+	}
+
+	template< typename _BaseClass >
+	double Unit< _BaseClass >::getDefenseRate() const
+	{
+		return m_defenseRate;
+	}
+	
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	

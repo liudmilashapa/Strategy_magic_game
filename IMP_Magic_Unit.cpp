@@ -13,11 +13,6 @@ namespace Implementation {
 		return m_curentMPU;
 	}
 
-	void MagicUnit::setCurentMPU ( double _curentMPU )
-	{
-		m_curentMPU = _curentMPU;
-	}
-
 	double MagicUnit::getMaxMPU () const 
 	{
 		return m_maxMPU;
