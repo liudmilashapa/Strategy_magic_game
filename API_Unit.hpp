@@ -18,18 +18,14 @@ namespace GameModel {
 	
 		Unit()
 		{}
-
-		Unit(const Unit & _unit) = delete;
-		Unit & operator = (const Unit & _unit) = delete;
-
 		
 		virtual double getCurentHP() const  = 0;
-		virtual void setCurentHP(double _other) = 0;
+		virtual void changeCurentHP(double _other) = 0;
 
 		virtual double getMaxHP()  const  = 0;
 		virtual double getAttackRate()  const = 0;
 		virtual double getDefenseRate()  const = 0;
-
+		virtual int getUnitID() const = 0;
 
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

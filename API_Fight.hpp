@@ -5,6 +5,7 @@
 #include < memory > 
 
 #include "API_Unit.hpp"
+#include "API_Army.hpp"
 
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
@@ -14,6 +15,9 @@ namespace GameModel {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
+	enum class BattleState { InProcess, FinishBattle };
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -24,13 +28,33 @@ namespace GameModel {
 	
 	public:
 
-		virtual void singleHit( Unit & _unit1, Unit & _unit2) = 0;
-		virtual void doubleHit( Unit & _unit1, Unit & _unit2) = 0;
+		Fight()
+		{}
+
+		virtual void addArmy( Army & _army ) = 0;
+
+		virtual bool hasArmyinFight ( Army & _army ) = 0;
+		virtual bool hasArmyDistroed( Army & _army ) = 0;
+		virtual bool hasButtleEnd() = 0;
+		virtual void endRound() = 0;
+		virtual BattleState getCurrentButtleState() const = 0;
+		virtual Army * getWinner() const = 0;
+
+		//virtual void addArmy(std::unique_ptr< GameModel::Army > _army1) = 0;
+
+		virtual void singleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) = 0;
+		virtual void doubleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) = 0;
+
+		virtual double calculatecurentHP(GameModel::Unit & _unit1, GameModel::Unit & _unit2) const = 0;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	private:
 
+		virtual void isUnitLive( const GameModel::Unit & _unit ) const = 0;
+		virtual void isUnitInArmy( const GameModel::Army & _army1, const GameModel::Unit  & _unit ) const = 0;
+		virtual void isArmydifference(const GameModel::Army & _army1, const GameModel::Army & _army2 ) const = 0;
+	
 	};
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

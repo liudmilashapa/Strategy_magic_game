@@ -22,6 +22,7 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	class AbilityUnit;
+	class Army;
 	class Fight;
 	class MagicUnit;
 	class Spell;
@@ -40,33 +41,38 @@ namespace Implementation {
 		GameFactory(const GameFactory & _other) = delete;
 		GameFactory & operator = (const GameFactory & _other) = delete;
 
+		std::unique_ptr < GameModel::Army > createArmy(
+				const int _ID
+			,	const int  _maxArmyCount
+		) const;
+
 		std::unique_ptr < GameModel::Unit > createUnit (
-			  const double & _maxHP
-			, const double & _attackRate
-			, const double & _defenseRate
+				const int _ID
+			,	const double  _maxHP
+			,	const double  _attackRate
+			,	const double  _defenseRate
 		) const;
 
 		std::unique_ptr < GameModel::MagicUnit > createMagicUnit (
-			  const double & _maxHP
-			, const double & _attackRate
-			, const double & _defenseRate
-			, const double & _maxMPU
-			, const spellContainer & _spells
+				const int _ID
+			,	const double  _maxHP
+			,	const double  _attackRate
+			,	const double  _defenseRate
+			,	const double  _maxMPU
+			,	const spellContainer & _spells
 		) const;
 
 		std::unique_ptr < GameModel::AbilityUnit > createAbilityUnit (
-			  const double & _maxHP
-			, const double & _attackRate
-			, const double & _defenseRate
+				const int _ID
+			,	const double  _maxHP
+			,	const double  _attackRate
+			,	const double  _defenseRate
 		) const;
 
-		std::unique_ptr < GameModel::Fight > createFight (
-			  fightContainer & _army1
-			, fightContainer & _army2
-		) const;
+		std::unique_ptr < GameModel::Fight > createFight () const;
 
 		std::unique_ptr < GameModel::Spell > createSpell (
-			const double & _cost
+				const double  _cost
 		) const;
 	
 

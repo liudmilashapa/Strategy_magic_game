@@ -1,62 +1,63 @@
-#ifndef _IMP_ABILITY_UNIT_HPP_
-#define _IMP_ABILITY_UNIT_HPP_
+#ifndef _API_ARMY_HPP_
+#define _API_ARMY_HPP_
 
-#include "API_Ability_Unit.hpp"
-#include "IMP_Unit.hpp"
+#include <optional>
+#include "API_Unit.hpp"
+
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 namespace GameModel {
-namespace Implementation {
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+	
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	typedef
-	GameModel::Implementation::Unit< GameModel::AbilityUnit >
-	AbilityUnitBase;
-
-//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-
-	class AbilityUnit
-		:	public AbilityUnitBase
+	class Army
 	{
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	public:
-		
-		AbilityUnit(
-				const int _unitID
-			,	const double  _maxHP
-			,	const double  _attackRate
-			,	const double  _defenseRate
-		)
-			: AbilityUnitBase( 
-					_unitID
-				,	_maxHP
-				,	_attackRate
-				,	_defenseRate 
-			)
+
+		Army() 
 		{}
 
-		AbilityUnit( const AbilityUnit & _other) = delete;
-		AbilityUnit & operator = ( const AbilityUnit & _other) = delete;
 
-		void applySpecialAbility() override;
-			
+		virtual bool compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const = 0;
+
+		virtual GameModel::Unit * getdUnit( int _number ) const = 0;
+		virtual int getArmySize() const = 0;
+		virtual int getMaxUnitsCount() const = 0;
+		virtual int getID() const = 0;
+		virtual Unit * getUnitForID( int _ID) const = 0;
+
+
+		virtual bool hasUnitInArmy(const GameModel::Unit & _unit) const = 0;
+		virtual bool hasArmyDistroed() const = 0;
+		virtual void addUnit( GameModel::Unit * _unit ) = 0;
+		virtual void Army::addUnit(std::unique_ptr< GameModel::Unit > _unit) = 0;
+
+		virtual void removedUnit( GameModel::Unit & _unit ) = 0;
+		virtual GameModel::Unit *
+			findUnit(GameModel::Unit & _unit) = 0;
+
+		//virtual std::unique_ptr< GameModel::Unit > getdUnit( GameModel::Unit & _unit ) = 0;
+	
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	private:
 
+		void isAmyFullness() const;
+
 	};
-	
+
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-} // namespace Implementation
-} // namespace GameModel
+}// namespace GameModel
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-
-#endif //!_IMP_ABILITY_UNIT_HPP_
+#endif // !_API_ARMY_HPP_

@@ -1,7 +1,11 @@
 #ifndef _IMP_UNIT_HPP_
 #define _IMP_UNIT_HPP_
 
+
+#include <stdexcept>
+
 #include "API_Unit.hpp"
+
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -18,14 +22,17 @@ namespace Implementation {
 	
 	public:
 
-		Unit ( const double & _maxHP
-			 , const double & _attackRate
-			 , const double & _defenseRate )
+		Unit (
+			const int _unitID
+		,	double _maxHP
+		,	const double _attackRate
+		,	const double _defenseRate )
 
-			:	  m_maxHP ( _maxHP )
-				, m_attackRate ( _attackRate )
-				, m_defenseRate ( _defenseRate )
-			,	m_curentHP( _maxHP )
+		:	m_unitID ( _unitID )
+		,	m_maxHP ( _maxHP )
+		,	m_attackRate ( _attackRate )
+		,	m_defenseRate ( _defenseRate )
+		,	m_curentHP( _maxHP )
 		{}
 		
 		Unit(const Unit & _other) = delete;
@@ -37,18 +44,19 @@ namespace Implementation {
 		{}
 		
 		virtual double getCurentHP() const override;
-		virtual void setCurentHP(double _other) override;
+		virtual void changeCurentHP(double _other) override;
 
 		virtual double getMaxHP() const override;
 		virtual double getAttackRate() const override;
 		virtual double getDefenseRate() const override;
-
+		virtual int getUnitID() const override;
 
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	private:
 
+		int m_unitID;
 		double m_curentHP;
 		double m_maxHP;
 		double m_attackRate;
@@ -59,19 +67,23 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	template< typename _BaseClass >
-	double Unit< _BaseClass >::getCurentHP() const
+	double Unit< _BaseClass >::getCurentHP () const
 	{
 		return m_curentHP;
 	}
 
 	template< typename _BaseClass >
-	void Unit< _BaseClass >::setCurentHP(double _other)
+	void Unit< _BaseClass >::changeCurentHP (double _other)
 	{
-		m_curentHP = _other;
+		if (_other >= 0 && _other <= m_maxHP)
+		{
+			m_curentHP = _other;
+		}
+		throw std::logic_error( " Invalid HP" );
 	}
 
 	template< typename _BaseClass >
-	double Unit< _BaseClass >::getMaxHP() const
+	double Unit< _BaseClass >::getMaxHP () const
 	{
 		return m_maxHP;
 	}
@@ -87,6 +99,13 @@ namespace Implementation {
 	{
 		return m_defenseRate;
 	}
+
+	template< typename _BaseClass >
+	int Unit< _BaseClass >::getUnitID() const
+	{
+		return m_unitID;
+	}
+	
 	
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

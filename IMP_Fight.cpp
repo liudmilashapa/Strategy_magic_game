@@ -2,7 +2,7 @@
 #include <stdio.h> 
 
 #include "IMP_Fight.hpp"
-#include "IMP_Unit.hpp"
+#include "IMP_Army.hpp"
 
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
@@ -12,55 +12,120 @@ namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	void Fight::singleHit( GameModel::Unit & _unit1, GameModel::Unit & _unit2 )
-		// 1st do hit
+	void Fight::addArmy( GameModel::Army & _army)
 	{
-		isUnitInArmy(m_army1, _unit1);
-		isUnitInArmy(m_army2, _unit2);
-		isUnitLive(_unit1);
-		isUnitLive(_unit2);
-		_unit2.setCurentHP(calculateDamage( _unit1,  _unit2));
+		if (hasArmyinFight(_army))
+			throw std::logic_error( "Army has been already add to fight" );
+		m_armiesInFight.insert( &_army);
+	}
+
+	bool Fight::hasArmyinFight(GameModel::Army & _army)
+	{
+		auto it = std::find(m_armiesInFight.begin(), m_armiesInFight.end(), _army);
+		return   it != m_armiesInFight.end();
+	}
+
+	bool Fight::hasArmyDistroed(GameModel::Army & _army)
+	{
+		if (!hasArmyinFight(_army))
+			throw std::logic_error("Army hasn't been in buttle");//?
+		return (_army.hasArmyDistroed());
+	}
+
+	void Fight::endRound()
+	{
+		int _armyDestroyed = 0;
+
+		for (auto & army : m_armiesInFight)
+		{
+			if (army->hasArmyDistroed())
+			{
+				_armyDestroyed++;
+			}
+		}
+
+		 (m_armiesInFight.size() - _armyDestroyed > 1) ?
+				m_currentButtleState = BattleState::FinishBattle
+			:	m_currentButtleState = BattleState::InProcess;
 	}
 	
-	void Fight::doubleHit(GameModel::Unit & _unit1, GameModel::Unit & _unit2)
+
+	BattleState Fight::getCurrentButtleState() const
 	{
-		isUnitInArmy(m_army1, _unit1);
-		isUnitInArmy(m_army2, _unit2);
-		isUnitLive(_unit1);
-		isUnitLive(_unit2);
-		_unit2.setCurentHP(calculateDamage(_unit1, _unit2));
-		_unit1.setCurentHP(calculateDamage(_unit2, _unit1));
+		return m_currentButtleState;
+	}
+
+	GameModel::Army * Fight::getWinner() const
+	{
+		if (getCurrentButtleState() == BattleState::FinishBattle)
+		{
+			for (auto & army : m_armiesInFight)
+			{
+				if (!army->hasArmyDistroed())
+				{
+					return army;
+				}
+			}
+			return nullptr;
+		}
+		throw std::logic_error( "Buttle in process" );
+	}
+
+	
+	void Fight::singleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit )
+		// 1st do hit
+	{
+		isUnitInArmy( _army1, _doHitUnits );
+		isUnitInArmy( _army2, _damageUnit );
+		isArmydifference( _army1, _army2 );
+		isUnitLive( _doHitUnits );
+		isUnitLive( _damageUnit );
+		_damageUnit.changeCurentHP( calculatecurentHP(_doHitUnits, _damageUnit) );
+	}	
+
+	void Fight::doubleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit )
+	{
+		isUnitInArmy(_army1, _doHitUnits);
+		isUnitInArmy(_army2, _damageUnit);
+		isArmydifference(_army1, _army2);
+		isUnitLive(_doHitUnits);
+		isUnitLive(_damageUnit);
+		_damageUnit.changeCurentHP( calculatecurentHP(_doHitUnits, _damageUnit) );
+		_doHitUnits.changeCurentHP( calculatecurentHP(_damageUnit, _doHitUnits) );
 	}
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	void Fight::isUnitInArmy(const fightContainer & _army, const GameModel::Unit & _unit) const
-	{	
-		if (std::find(_army.begin(), _army.end(), &_unit) != _army.end())
-			throw std::logic_error("This unit isn't situating on the board now");
+	
+
+	double Fight::calculatecurentHP(GameModel::Unit & _doHitUnits, GameModel::Unit & _damageUnit) const
+	{
+		if (_damageUnit.getDefenseRate() > _doHitUnits.getAttackRate())
+			return _damageUnit.getCurentHP();
+
+		double _other = (_damageUnit.getCurentHP() + (_damageUnit.getDefenseRate() - _doHitUnits.getAttackRate()));
+		return _other;
 	}
 
-	void Fight::isUnitLive(const GameModel::Unit & _unit) const
+	void Fight::isUnitLive( const GameModel::Unit & _unit ) const
 	{
-		if (_unit.getCurentHP()==0)
+		if ( _unit.getCurentHP() ==0 )
 			throw std::logic_error("This unit has been kill");
 	}
 
-	double Fight::calculateDamage(GameModel::Unit & _unit1, GameModel::Unit & _unit2) const
+	void Fight::isUnitInArmy( const GameModel::Army & _army, const GameModel::Unit & _unit) const
 	{
-		if( _unit2.getDefenseRate() > _unit1.getAttackRate() )
-			return _unit2.getCurentHP();
-
-		double _other =_unit2.getCurentHP() + (_unit2.getDefenseRate() - _unit1.getAttackRate());
-		if ((_other) >= 0)
-		{
-			return _other;
-		}
-		else 
-			return 0;
+		if (!_army.hasUnitInArmy(_unit))
+			throw std::logic_error("Unit hasn't been in this army");
 	}
 
+	void Fight::isArmydifference(const GameModel::Army & _army1, const GameModel::Army & _army2) const
+	{
+		if (&_army1 == &_army2)
+			throw std::logic_error ("There are units from the same armies ");
+	}
 
+	
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 } // namespace Implementation

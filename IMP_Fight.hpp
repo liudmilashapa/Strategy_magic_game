@@ -1,7 +1,7 @@
 #ifndef _IMP_FIGHT_HPP
 #define _IMP_FIGHT_HPP
 
-#include < vector >
+#include < set >
 #include < memory > 
 
 #include "API_Fight.hpp"
@@ -16,11 +16,11 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	typedef
-		std::vector < GameModel::Unit * >
+		std::set < GameModel::Army * >
 		fightContainer;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-
+	
 	class Fight : public GameModel::Fight
 	{
 
@@ -28,26 +28,38 @@ namespace Implementation {
 
 	public:
 
-		Fight( fightContainer & _army1, fightContainer & _army2 ) 
-		:m_army1( _army1 ), m_army2( _army2 )
+		Fight()
 		{}
 
 		Fight( const Fight & _other ) = delete;
 		Fight & operator = ( const Fight & _other ) = delete;
 
-		virtual void singleHit( GameModel::Unit & _unit1, GameModel::Unit & _unit2 ) override;
-		virtual void doubleHit(GameModel::Unit & _unit1, GameModel::Unit & _unit2 ) override;
+		virtual void addArmy( GameModel::Army & _army1) override;
+		//virtual void addArmy(std::unique_ptr< GameModel::Army > _army1) override;
+		virtual bool hasArmyinFight(GameModel::Army & _army) override;
+		virtual bool hasArmyDistroed(GameModel::Army & _army) override;
+		virtual bool hasButtleEnd() override;
+		virtual void endRound() override;
+
+		virtual BattleState getCurrentButtleState() const override;
+		virtual GameModel::Army * getWinner() const override;
+
+		virtual void singleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) override;
+		virtual void doubleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) override;
+
+		virtual double calculatecurentHP( GameModel::Unit & _unit1, GameModel::Unit & _unit2) const override;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	private:
 
-		fightContainer m_army1;
-		fightContainer m_army2;
+		fightContainer m_armiesInFight;
+		BattleState m_currentButtleState;
 
-		void isUnitInArmy(const fightContainer & _army, const GameModel::Unit & _unit) const;
-		void isUnitLive(const GameModel::Unit & _unit) const;
-		double calculateDamage(GameModel::Unit & _unit1, GameModel::Unit & _unit2) const;
+		virtual void isUnitLive( const GameModel::Unit & _unit ) const override;
+		virtual void isUnitInArmy( const GameModel::Army & _army, const GameModel::Unit & _unit ) const override;
+
+		virtual void isArmydifference(const GameModel::Army & _army1, const GameModel::Army & _army2) const override;
 	};
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//

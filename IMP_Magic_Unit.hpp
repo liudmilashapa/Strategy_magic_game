@@ -17,8 +17,8 @@ namespace Implementation {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	typedef
-	std::list<  Spell * >
-	spellContainer;
+		std::list<  Spell * >
+		spellContainer;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -37,15 +37,17 @@ namespace Implementation {
 	public:
 
 		MagicUnit(
-			  const double & _maxHP
-			, const double & _attackRate
-			, const double & _defenseRate
-			, const double & _maxMPU
-			, const spellContainer & _spells)
+				const int _unitID
+			,	const double _maxHP
+			,	const double _attackRate
+			,	const double _defenseRate
+			,	const double _maxMPU
+			,	const spellContainer & _spells)
 		: MagicUnitBase (
-				   _maxHP
-				,  _attackRate
-				,  _defenseRate)
+					_unitID
+				,	_maxHP
+				,	_attackRate
+				,	_defenseRate)
 		,	m_curentMPU( _maxMPU )
 		,	m_maxMPU( _maxMPU )
 		,	m_spells( _spells )
