@@ -31,15 +31,19 @@ namespace GameModel {
 		virtual int getArmySize() const = 0;
 		virtual int getMaxUnitsCount() const = 0;
 		virtual int getID() const = 0;
-		virtual Unit * getUnitForID( int _ID) const = 0;
+		virtual std::unique_ptr< GameModel::Unit >
+			getUnitForID( int _ID) const = 0;
 
 
-		virtual bool hasUnitInArmy(const GameModel::Unit & _unit) const = 0;
+		virtual bool hasUnitInArmy( const GameModel::Unit & _unit ) const = 0;
 		virtual bool hasArmyDistroed() const = 0;
-		virtual void addUnit( GameModel::Unit * _unit ) = 0;
-		virtual void Army::addUnit(std::unique_ptr< GameModel::Unit > _unit) = 0;
 
-		virtual void removedUnit( GameModel::Unit & _unit ) = 0;
+		virtual void 
+			ddUnit(std::unique_ptr< GameModel::Unit > _unit) = 0;
+
+		virtual void removedUnit( const GameModel::Unit & _unit ) = 0;
+		virtual void removedUnit(std::unique_ptr<GameModel::Unit> _unit) = 0;
+
 		virtual GameModel::Unit *
 			findUnit(GameModel::Unit & _unit) = 0;
 

@@ -12,15 +12,15 @@ namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	bool Army::compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const
+	/*bool Army::compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const
 	{
 		return (_unit1.get() == _unit2.get());
-	}
-	
+	}*/
+	/*
 	GameModel::Unit *  Army::getdUnit(int _number) const
 	{
 
-	}
+	}*/
 
 	int Army::getArmySize() const
 	{
@@ -37,19 +37,20 @@ namespace Implementation {
 		return m_ID;
 	}
 
-	GameModel::Unit *  Army::getUnitForID( int _ID ) const
+	std::unique_ptr< GameModel::Unit >
+		Army::getUnitForID( int _ID ) const
 	{
 		auto it = std::find_if(
 				m_army.begin()
 			,	m_army.end()
-			, [_ID] (std::unique_ptr< Unit > const & _unit)-> bool
+			, [_ID] (armyPair & _pair)-> bool
 		{
-			return (_unit->getUnitID() == _ID);
+			return (_pair.first->getUnitID() == _ID);
 		}
 		);
-		if (it != m_army.end)
+		if (it != m_army.end())
 		{
-			return it->get();
+			return m_army.at(it->first);
 		}
 		return nullptr;
 	}
@@ -65,40 +66,40 @@ namespace Implementation {
 		auto it = std::find_if(
 			m_army.begin()
 			, m_army.end()
-			, [](std::unique_ptr< Unit > const & _unit) -> bool
+			, [](armyPair & _pair) -> bool
 		{
-			return( _unit->getCurentHP() != 0);
+			return( _pair.first->getCurentHP() != 0);
 		}
 		);
 		return (it == m_army.end());
 	}
 
-	void Army::addUnit(GameModel::Unit * _unit)
-	{
-		isAmyFullness();
-		std::unique_ptr < GameModel::Unit > unit(_unit);
-		m_army.insert ( unit );
-	}
 
 	void Army::addUnit(std::unique_ptr< GameModel::Unit > _unit)
 	{
 		isAmyFullness();
-		m_army.insert(_unit);
+		m_army.insert(std::make_pair(_unit.get(), _unit));
 	}
 
-	void Army::removedUnit(GameModel::Unit & _unit)
+	void Army::removedUnit(const GameModel::Unit & _unit)
 	{
-		auto it = std::remove_if (
-			m_army.begin()
-			, m_army.end()
-			, [&_unit] (std::unique_ptr< Unit > const & _unit2) -> bool
-		{
-			return(&_unit == _unit2.get());
-		}
+		auto it = std::remove_if
+		(
+				m_army.begin()
+			,	m_army.end()
+			,	[&_unit](armyPair & _pair) -> bool
+			{
+				return(& _unit == _pair.first);
+			}
 		);
+			if (it == m_army.end())
+			{
+				throw std::logic_error("Unit wasnt finded there");
+			}
+			m_army.erase(it);
+
+		//std::unique_ptr < GameModel::Unit >
 	}
-
-
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	void Army::isAmyFullness() const
