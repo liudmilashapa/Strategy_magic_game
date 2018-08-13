@@ -50,14 +50,14 @@
 	 {
 		 int redSoldierNo = rand() % _redArmyForFight.getArmySize() - 1;
 
-		 while (_redArmyForFight.getUnitForID(redSoldierNo)->getCurentHP() == 0)
+		 while (_redArmyForFight.getHPForID(redSoldierNo) == 0)
 		 {
 			 redSoldierNo = (redSoldierNo == (_redArmyForFight.getArmySize() - 1)) ? 0 : redSoldierNo + 1;
 		 }
 
 		 int blueSoldierNo = rand() % _blueArmyForFight.getArmySize();
 
-		 while ((_blueArmyForFight.getUnitForID(blueSoldierNo)->getCurentHP()) == 0)
+		 while ((_blueArmyForFight.getHPForID(blueSoldierNo)) == 0)
 		 {
 			 blueSoldierNo = (blueSoldierNo == _blueArmyForFight.getArmySize() - 1) ? 0 : blueSoldierNo + 1;
 		 }

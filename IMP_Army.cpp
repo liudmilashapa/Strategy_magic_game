@@ -12,16 +12,6 @@ namespace Implementation {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
-	/*bool Army::compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const
-	{
-		return (_unit1.get() == _unit2.get());
-	}*/
-	/*
-	GameModel::Unit *  Army::getdUnit(int _number) const
-	{
-
-	}*/
-
 	int Army::getArmySize() const
 	{
 		return (int) m_army.size();
@@ -37,22 +27,31 @@ namespace Implementation {
 		return m_ID;
 	}
 
-	std::unique_ptr< GameModel::Unit >
-		Army::getUnitForID( int _ID ) const
+	double Army::getHPForID( int _ID ) const
 	{
 		auto it = std::find_if(
 				m_army.begin()
 			,	m_army.end()
 			, [_ID] (armyPair & _pair)-> bool
 		{
-			return (_pair.first->getUnitID() == _ID);
+			return (_pair.second->getUnitID() == _ID);
 		}
 		);
 		if (it != m_army.end())
 		{
-			return m_army.at(it->first);
+			return it->second->getCurentHP();
 		}
-		return nullptr;
+		throw std::logic_error("Unit isn't below this army");
+	}
+
+	GameModel::Unit & Army::getUnitForID(int _ID) const
+	{
+		std::optional <armyIt> _it = findUnit(_ID);
+		if (_it)
+		{
+			return _it._Value->second.get();
+		}
+		
 	}
 
 	bool Army::hasUnitInArmy(const GameModel::Unit & _unit) const
@@ -68,7 +67,7 @@ namespace Implementation {
 			, m_army.end()
 			, [](armyPair & _pair) -> bool
 		{
-			return( _pair.first->getCurentHP() != 0);
+			return( _pair.second->getCurentHP() != 0);
 		}
 		);
 		return (it == m_army.end());
@@ -78,18 +77,18 @@ namespace Implementation {
 	void Army::addUnit(std::unique_ptr< GameModel::Unit > _unit)
 	{
 		isAmyFullness();
-		m_army.insert(std::make_pair(_unit.get(), _unit));
+		m_army.insert(std::make_pair(_unit->getUnitID(), _unit));
 	}
 
-	void Army::removedUnit(const GameModel::Unit & _unit)
+	void Army::removedUnit(int _ID)
 	{
 		auto it = std::remove_if
 		(
 				m_army.begin()
 			,	m_army.end()
-			,	[&_unit](armyPair & _pair) -> bool
+			,	[&_ID](armyPair & _pair) -> bool
 			{
-				return(& _unit == _pair.first);
+				return(_ID == _pair.first);
 			}
 		);
 			if (it == m_army.end())
@@ -100,6 +99,25 @@ namespace Implementation {
 
 		//std::unique_ptr < GameModel::Unit >
 	}
+
+	 std::optional <armyIt> Army::findUnit(int _id) const
+	{
+		 std::optional <armyIt> _res;
+		 armyIt it = std::find_if(
+			 m_army.begin()
+			 , m_army.end()
+			 , [_id](armyPair & _pair)-> bool
+		 {
+			 return (_pair.second->getUnitID() == _id);
+		 }
+		 ); 
+		if (it != m_army.end())
+			 {
+			_res = it;
+			 }
+		return _res;
+	}
+
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	void Army::isAmyFullness() const

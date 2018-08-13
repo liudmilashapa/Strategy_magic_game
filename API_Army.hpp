@@ -10,7 +10,21 @@
 namespace GameModel {
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	typedef
+		std::pair <int, std::unique_ptr< GameModel::Unit >> armyPair;
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	typedef
+		std::map < int, std::unique_ptr< GameModel::Unit> >
+		armyContainer;
+
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
+	typedef
+		armyContainer::iterator 
+		armyIt;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -25,27 +39,25 @@ namespace GameModel {
 		{}
 
 
-		virtual bool compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const = 0;
+		// virtual bool compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const = 0;
 
-		virtual GameModel::Unit * getdUnit( int _number ) const = 0;
+		
 		virtual int getArmySize() const = 0;
 		virtual int getMaxUnitsCount() const = 0;
 		virtual int getID() const = 0;
-		virtual std::unique_ptr< GameModel::Unit >
-			getUnitForID( int _ID) const = 0;
+		virtual double getHPForID(int _ID) const = 0;
+		virtual GameModel::Unit & getUnitForID(int _ID) const = 0;
 
 
 		virtual bool hasUnitInArmy( const GameModel::Unit & _unit ) const = 0;
 		virtual bool hasArmyDistroed() const = 0;
 
 		virtual void 
-			ddUnit(std::unique_ptr< GameModel::Unit > _unit) = 0;
+			addUnit(std::unique_ptr< GameModel::Unit > _unit) = 0;
 
-		virtual void removedUnit( const GameModel::Unit & _unit ) = 0;
-		virtual void removedUnit(std::unique_ptr<GameModel::Unit> _unit) = 0;
-
-		virtual GameModel::Unit *
-			findUnit(GameModel::Unit & _unit) = 0;
+		virtual void removedUnit(int _id) = 0;
+	
+		virtual  std::optional <armyIt> findUnit(int _id) const = 0;
 
 		//virtual std::unique_ptr< GameModel::Unit > getdUnit( GameModel::Unit & _unit ) = 0;
 	

@@ -24,7 +24,7 @@ namespace Implementation {
 			const int _ID
 		,	const int _maxArmyCount ) const
 	{
-		return  std::unique_ptr < GameModel::Army >(new Army (
+		return  std::unique_ptr < GameModel::Army >(new GameModel::Implementation::Army (
 			_ID
 		,	_maxArmyCount ));
 
