@@ -46,10 +46,10 @@ namespace Implementation {
 
 	GameModel::Unit & Army::getUnitForID(int _ID) const
 	{
-		std::optional <armyIt> _it = findUnit(_ID);
+		std::optional < GameModel::Unit & > _it = findUnit(_ID);
 		if (_it)
 		{
-			return _it._Value->second.get();
+			return _it->second.get();
 		}
 		
 	}
@@ -100,10 +100,10 @@ namespace Implementation {
 		//std::unique_ptr < GameModel::Unit >
 	}
 
-	 std::optional <armyIt> Army::findUnit(int _id) const
+	 std::optional < GameModel::Unit & > Army::findUnit(int _id) const
 	{
 		 std::optional <armyIt> _res;
-		 armyIt it = std::find_if(
+		 auto it = std::find_if(
 			 m_army.begin()
 			 , m_army.end()
 			 , [_id](armyPair & _pair)-> bool

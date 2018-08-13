@@ -2,6 +2,7 @@
 #define _API_ARMY_HPP_
 
 #include <optional>
+#include <map>
 #include "API_Unit.hpp"
 
 
@@ -57,7 +58,7 @@ namespace GameModel {
 
 		virtual void removedUnit(int _id) = 0;
 	
-		virtual  std::optional <armyIt> findUnit(int _id) const = 0;
+		virtual  std::optional <GameModel::Unit &> findUnit(int _id) const = 0;
 
 		//virtual std::unique_ptr< GameModel::Unit > getdUnit( GameModel::Unit & _unit ) = 0;
 	

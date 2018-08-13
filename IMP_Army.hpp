@@ -43,7 +43,7 @@ namespace Implementation {
 
 		virtual void addUnit( std::unique_ptr< GameModel::Unit > _unit) override;
 		virtual void removedUnit( int _id ) override;
-		virtual  std::optional <armyIt> findUnit(int _id) const override;
+		virtual  std::optional < GameModel::Unit & > findUnit(int _id) const override;
 
 		//virtual std::unique_ptr< GameModel::Unit > getdUnit( GameModel::Unit & _unit ) override;
 	
