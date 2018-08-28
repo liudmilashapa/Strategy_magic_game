@@ -27,16 +27,9 @@ namespace Implementation {
 		return m_ID;
 	}
 
-	double Army::getHPForID( int _ID ) const
+	double Army::getHPForID( int _id ) const
 	{
-		auto it = std::find_if(
-				m_army.begin()
-			,	m_army.end()
-			, [_ID] (armyPair & _pair)-> bool
-		{
-			return (_pair.second->getUnitID() == _ID);
-		}
-		);
+		auto it = m_army.find(_id);
 		if (it != m_army.end())
 		{
 			return it->second->getCurentHP();
@@ -44,76 +37,66 @@ namespace Implementation {
 		throw std::logic_error("Unit isn't below this army");
 	}
 
-	GameModel::Unit & Army::getUnitForID(int _ID) const
+	GameModel::Unit & Army::getUnitForID(int _id) const
 	{
-		std::optional < GameModel::Unit & > _it = findUnit(_ID);
-		if (_it)
+		std::optional < GameModel::Unit * > _unit = findUnit(_id);
+		if (_unit)
 		{
-			return _it->second.get();
+			return **_unit;
 		}
 		
 	}
 
-	bool Army::hasUnitInArmy(const GameModel::Unit & _unit) const
+	bool Army::hasUnitInArmy(int _id) const
 	{
-		auto it = std::find(m_army.begin(), m_army.end(), _unit);
+		auto it = std::find_if
+			(	m_army.begin()
+			,	m_army.end()
+			,	[_id](armyPair const & _pair) -> bool
+		{
+			return (_pair.first == _id);
+		}
+		);
 		return   it != m_army.end();
 	}
 
 	bool Army::hasArmyDistroed() const
 	{
 		auto it = std::find_if(
-			m_army.begin()
-			, m_army.end()
-			, [](armyPair & _pair) -> bool
+				m_army.cbegin()
+			,	m_army.cend()
+			,	[](armyPair const & _pair) -> bool
 		{
 			return( _pair.second->getCurentHP() != 0);
 		}
 		);
-		return (it == m_army.end());
+		return (it == m_army.cend());
 	}
 
 
 	void Army::addUnit(std::unique_ptr< GameModel::Unit > _unit)
 	{
 		isAmyFullness();
-		m_army.insert(std::make_pair(_unit->getUnitID(), _unit));
+		m_army.insert(std::make_pair(_unit->getUnitID(), std::move(_unit)));
 	}
 
-	void Army::removedUnit(int _ID)
+	void Army::removedUnit(int _id)
 	{
-		auto it = std::remove_if
-		(
-				m_army.begin()
-			,	m_army.end()
-			,	[&_ID](armyPair & _pair) -> bool
-			{
-				return(_ID == _pair.first);
-			}
-		);
+		auto it = m_army.find(_id);
 			if (it == m_army.end())
 			{
 				throw std::logic_error("Unit wasnt finded there");
 			}
 			m_army.erase(it);
-
-		//std::unique_ptr < GameModel::Unit >
 	}
 
-	 std::optional < GameModel::Unit & > Army::findUnit(int _id) const
+	 std::optional < GameModel::Unit * > Army::findUnit(int _id) const
 	{
-		 std::optional <armyIt> _res;
-		 auto it = std::find_if(
-			 m_army.begin()
-			 , m_army.end()
-			 , [_id](armyPair & _pair)-> bool
-		 {
-			 return (_pair.second->getUnitID() == _id);
-		 }
-		 ); 
+		 std::optional < GameModel::Unit * > _res;
+		 auto it = m_army.find(_id);
 		if (it != m_army.end())
 			 {
-			_res = it;
+			_res =  it->second.get();
 			 }
 		return _res;
 	}

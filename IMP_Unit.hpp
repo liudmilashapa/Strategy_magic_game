@@ -79,7 +79,10 @@ namespace Implementation {
 		{
 			m_curentHP = _other;
 		}
-		throw std::logic_error( " Invalid HP" );
+		else
+		{
+			throw std::logic_error(" Invalid HP");
+		}
 	}
 
 	template< typename _BaseClass >

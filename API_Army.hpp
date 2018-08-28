@@ -13,19 +13,20 @@ namespace GameModel {
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
 	typedef
-		std::pair <int, std::unique_ptr< GameModel::Unit >> armyPair;
-
-//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
-
-	typedef
 		std::map < int, std::unique_ptr< GameModel::Unit> >
 		armyContainer;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 	
 	typedef
-		armyContainer::iterator 
+		armyContainer::const_iterator
 		armyIt;
+	
+//*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
+
+	typedef
+		armyContainer::const_iterator::value_type
+		armyPair;
 
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 
@@ -39,18 +40,14 @@ namespace GameModel {
 		Army() 
 		{}
 
-
-		// virtual bool compair(std::unique_ptr <GameModel::Unit> _unit1, std::unique_ptr <GameModel::Unit> _unit2) const = 0;
-
-		
 		virtual int getArmySize() const = 0;
 		virtual int getMaxUnitsCount() const = 0;
 		virtual int getID() const = 0;
-		virtual double getHPForID(int _ID) const = 0;
-		virtual GameModel::Unit & getUnitForID(int _ID) const = 0;
+		virtual double getHPForID(int _id) const = 0;
+		virtual GameModel::Unit & getUnitForID(int _id) const = 0;
 
 
-		virtual bool hasUnitInArmy( const GameModel::Unit & _unit ) const = 0;
+		virtual bool hasUnitInArmy( int _id ) const = 0;
 		virtual bool hasArmyDistroed() const = 0;
 
 		virtual void 
@@ -58,9 +55,8 @@ namespace GameModel {
 
 		virtual void removedUnit(int _id) = 0;
 	
-		virtual  std::optional <GameModel::Unit &> findUnit(int _id) const = 0;
+		virtual  std::optional < GameModel::Unit * > findUnit(int _id) const = 0;
 
-		//virtual std::unique_ptr< GameModel::Unit > getdUnit( GameModel::Unit & _unit ) = 0;
 	
 //*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*//
 

@@ -33,12 +33,14 @@ namespace GameModel {
 
 		virtual void addArmy( Army & _army ) = 0;
 
-		virtual bool hasArmyinFight ( Army & _army ) = 0;
-		virtual bool hasArmyDistroed( Army & _army ) = 0;
-		virtual bool hasButtleEnd() = 0;
+		virtual bool hasArmyinFight ( Army * _army ) const = 0;
+		virtual bool hasArmyDistroed( Army & _army ) const = 0;
+		virtual bool hasButtleEnd() const = 0;
 		virtual void endRound() = 0;
 		virtual BattleState getCurrentButtleState() const = 0;
 		virtual Army * getWinner() const = 0;
+
+		virtual void getCurrentButtleState(BattleState _curentButtleState) = 0;
 
 		//virtual void addArmy(std::unique_ptr< GameModel::Army > _army1) = 0;
 

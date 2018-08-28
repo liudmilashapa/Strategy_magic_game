@@ -35,14 +35,16 @@ namespace Implementation {
 		Fight & operator = ( const Fight & _other ) = delete;
 
 		virtual void addArmy( GameModel::Army & _army1) override;
-		//virtual void addArmy(std::unique_ptr< GameModel::Army > _army1) override;
-		virtual bool hasArmyinFight(GameModel::Army & _army) override;
-		virtual bool hasArmyDistroed(GameModel::Army & _army) override;
-		virtual bool hasButtleEnd() override;
+	
+		virtual bool hasArmyinFight(GameModel::Army * _army) const override;
+		virtual bool hasArmyDistroed(GameModel::Army & _army) const override;
+		virtual bool hasButtleEnd() const override;
 		virtual void endRound() override;
 
 		virtual BattleState getCurrentButtleState() const override;
 		virtual GameModel::Army * getWinner() const override;
+
+		virtual  void getCurrentButtleState(BattleState _curentButtleState) override;
 
 		virtual void singleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) override;
 		virtual void doubleHit( GameModel::Army & _army1, GameModel::Unit & _doHitUnits, GameModel::Army & _army2, GameModel::Unit & _damageUnit ) override;

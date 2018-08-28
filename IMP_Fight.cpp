@@ -14,22 +14,33 @@ namespace Implementation {
 
 	void Fight::addArmy( GameModel::Army & _army)
 	{
-		if (hasArmyinFight(_army))
+		if (hasArmyinFight(&_army))
 			throw std::logic_error( "Army has been already add to fight" );
 		m_armiesInFight.insert( &_army);
 	}
 
-	bool Fight::hasArmyinFight(GameModel::Army & _army)
+	bool Fight::hasArmyinFight(GameModel::Army * _army) const
 	{
 		auto it = std::find(m_armiesInFight.begin(), m_armiesInFight.end(), _army);
 		return   it != m_armiesInFight.end();
 	}
 
-	bool Fight::hasArmyDistroed(GameModel::Army & _army)
+	bool Fight::hasArmyDistroed(GameModel::Army & _army) const
 	{
-		if (!hasArmyinFight(_army))
+		if (!hasArmyinFight(&_army))
 			throw std::logic_error("Army hasn't been in buttle");//?
 		return (_army.hasArmyDistroed());
+	}
+
+	bool Fight::hasButtleEnd() const 
+	{
+		int _temp = 0;
+		for (auto army : m_armiesInFight)
+		{
+			if (!hasArmyDistroed(*army))
+				_temp++;
+		}
+		return (_temp <=1 );
 	}
 
 	void Fight::endRound()
@@ -45,8 +56,8 @@ namespace Implementation {
 		}
 
 		 (m_armiesInFight.size() - _armyDestroyed > 1) ?
-				m_currentButtleState = BattleState::FinishBattle
-			:	m_currentButtleState = BattleState::InProcess;
+				(m_currentButtleState = BattleState::InProcess)
+			:	(m_currentButtleState = BattleState::FinishBattle);
 	}
 	
 
@@ -69,6 +80,11 @@ namespace Implementation {
 			return nullptr;
 		}
 		throw std::logic_error( "Buttle in process" );
+	}
+
+	void Fight::getCurrentButtleState(BattleState _curentButtleState)
+	{
+		m_currentButtleState = _curentButtleState;
 	}
 
 	
@@ -104,7 +120,7 @@ namespace Implementation {
 			return _damageUnit.getCurentHP();
 
 		double _other = (_damageUnit.getCurentHP() + (_damageUnit.getDefenseRate() - _doHitUnits.getAttackRate()));
-		return _other;
+		return (_other > 0) ?  _other :  0 ;
 	}
 
 	void Fight::isUnitLive( const GameModel::Unit & _unit ) const
@@ -115,7 +131,7 @@ namespace Implementation {
 
 	void Fight::isUnitInArmy( const GameModel::Army & _army, const GameModel::Unit & _unit) const
 	{
-		if (!_army.hasUnitInArmy(_unit))
+		if (!_army.hasUnitInArmy(_unit.getUnitID()))
 			throw std::logic_error("Unit hasn't been in this army");
 	}
 
