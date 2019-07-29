@@ -1,0 +1,4 @@
+﻿cl : Command line warning D9025: overriding '/std:c++17' with '/std:c++latest'
+  test.cpp
+e:\downloads\lu\projects\smg(local_copy)\smg_copy\smg_copy\test.cpp(57): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  SMG_copy.vcxproj -> E:\Downloads\Lu\Projects\SMG(Local_copy)\SMG_copy\Debug\SMG_copy.exe
